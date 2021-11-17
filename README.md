@@ -18,6 +18,8 @@ This tool mainly targets at automatically extracting dispersion curves via deep 
 
 * Check the parameters in the configuration file: `./config/config.py`
 
+* Write the station location information in `./config/station.txt`
+
 * Run the detection program: `python pick_v.py` 
 
 ## 3. Picking results
