@@ -1,5 +1,5 @@
 tensorflow==1.13.1
-obspy==1.1.1
-matplotlib
+obspy==1.2.2
+matplotlib==2.2.2
 numpy==1.15.1
 sklearn

@@ -9,6 +9,7 @@ This tool mainly targets at automatically extracting dispersion curves via deep 
 ## 1. Installation
 
 * Download repository
+* Install Python 3.6
 * Install dependencies: `pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt`
 
 ## 2. Applications
