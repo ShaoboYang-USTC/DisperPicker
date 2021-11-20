@@ -29,47 +29,47 @@ class Reader(object):
                              'Weifang':[0.6, 10, 0.1]}
         self.uniform_data_size = [201, 76]
 
-    def get_all_filename(self, filepath):
+    def get_all_filename(self, file_path):
         filename_list = []
-        for file in os.listdir(filepath):
+        for file in os.listdir(file_path):
             filename = os.path.splitext(file)[0]
             filename_list.append(filename)
         #filename_list = np.array(filename_list)
         #filename_list.sort()
         return filename_list
 
-    def get_batch_data(self, dataArea, start_point, seed, fileList):
+    def get_batch_data(self, data_area, start_point, seed, file_list):
 
         np.random.seed(seed)
-        np.random.shuffle(fileList)
+        np.random.shuffle(file_list)
 
-        train_batch_file = fileList[start_point:start_point + self.batch_size]
+        train_batch_file = file_list[start_point:start_point + self.batch_size]
         # print('Train File: \n')
         # print(train_batch_file)
         batch_data = []
         batch_label = []
-        data_size = self.data_size_list[dataArea]
-        VRange = self.data_range_V[dataArea]
-        TRange = self.data_range_T[dataArea]
+        data_size = self.data_size_list[data_area]
+        VRange = self.data_range_V[data_area]
+        TRange = self.data_range_T[data_area]
         row = data_size[0]
         col = data_size[1]
 
         for each_train_file in train_batch_file:
-            each_data1 = np.loadtxt(self.training_data_path + '/' + dataArea + 
+            each_data1 = np.loadtxt(self.training_data_path + '/' + data_area + 
                                     '/group_image/' + each_train_file + '.dat')
-            each_label1 = np.loadtxt(self.training_data_path + '/' + dataArea + 
+            each_label1 = np.loadtxt(self.training_data_path + '/' + data_area + 
                                      '/group_velocity/' + each_train_file + '.dat')
             each_data1 = each_data1[:, :col]
             each_label1 = each_label1[:col, 1]
             if len(each_label1) < col:
                 zero = np.zeros(col - len(each_label1))
-                each_label1 = np.concatenate((each_label1, zero), axis = 0)
+                each_label1 = np.concatenate((each_label1, zero), axis=0)
             else:
                 each_label1 = each_label1[:col]
             len_each_data1 = len(each_data1)
             if row > len_each_data1:
                 zero = np.zeros((row - len_each_data1, col))
-                each_data1 = np.concatenate((zero, each_data1), axis = 0)
+                each_data1 = np.concatenate((zero, each_data1), axis=0)
             else:
                 each_data1 = each_data1[len_each_data1-row:]
             num = 0
@@ -82,9 +82,9 @@ class Reader(object):
                         matrix1[j, num] = np.exp(-((y_index-j)**2)/(2*r**2))
                 num += 1
 
-            each_data2 = np.loadtxt(self.training_data_path + '/' + dataArea + 
+            each_data2 = np.loadtxt(self.training_data_path + '/' + data_area + 
                                     '/phase_image/' + each_train_file + '.dat')
-            each_label2 = np.loadtxt(self.training_data_path + '/' + dataArea + 
+            each_label2 = np.loadtxt(self.training_data_path + '/' + data_area + 
                                      '/phase_velocity/' + each_train_file + '.dat')
             each_data2 = each_data2[:, :col]
             each_label2 = each_label2[:col, 1]
@@ -102,7 +102,7 @@ class Reader(object):
                 each_data2 = each_data2[len_each_data2-row:]
             
             num = 0
-            matrix2 = np.zeros((row,col))
+            matrix2 = np.zeros((row, col))
             r = self.radius
             for i in each_label2:
                 if i != 0:
@@ -122,7 +122,7 @@ class Reader(object):
             each_data = each_data[:, :self.uniform_data_size[0], :self.uniform_data_size[1]]
             each_label = each_label[:, :self.uniform_data_size[0], :self.uniform_data_size[1]]
 
-            if dataArea == 'Weifang' or dataArea == 'Changning':
+            if data_area == 'Weifang' or data_area == 'Changning':
                 uniformData = np.zeros((2, self.uniform_data_size[0], self.uniform_data_size[1]))
                 uniformLabel = np.zeros((2, self.uniform_data_size[0], self.uniform_data_size[1]))
                 uniformData[:, :each_data.shape[1], :each_data.shape[2]] = each_data
@@ -135,27 +135,27 @@ class Reader(object):
             batch_label.append(each_label)
 
         batch_data = np.array(batch_data)
-        batch_data = batch_data.transpose((0,2,3,1))
+        batch_data = batch_data.transpose((0, 2, 3, 1))
         batch_label = np.array(batch_label)
-        batch_label = batch_label.transpose((0,2,3,1))
+        batch_label = batch_label.transpose((0, 2, 3, 1))
 
         return batch_data, batch_label
 
-    def get_validation_data(self, dataArea, fileList):
+    def get_validation_data(self, data_area, file_list):
         # random.seed(0)
-        fileList = random.sample(fileList, self.config.batch_size)
+        file_list = random.sample(file_list, self.config.batch_size)
         validation_data = []
         validation_label = []
-        data_size = self.data_size_list[dataArea]
-        VRange = self.data_range_V[dataArea]
-        TRange = self.data_range_T[dataArea]
+        data_size = self.data_size_list[data_area]
+        VRange = self.data_range_V[data_area]
+        TRange = self.data_range_T[data_area]
         row = data_size[0]
         col = data_size[1]
 
-        for each_valid_file in fileList:
-            each_data1 = np.loadtxt(self.validation_data_path + '/' + dataArea + 
+        for each_valid_file in file_list:
+            each_data1 = np.loadtxt(self.validation_data_path + '/' + data_area + 
                                     '/group_image/' + each_valid_file  + '.dat')
-            each_label1 = np.loadtxt(self.validation_data_path + '/' + dataArea + 
+            each_label1 = np.loadtxt(self.validation_data_path + '/' + data_area + 
                                     '/group_velocity/' + each_valid_file  + '.dat')
             each_data1 = each_data1[:, :col]
             each_label1 = each_label1[:col, 1]
@@ -181,9 +181,9 @@ class Reader(object):
                         matrix1[j, num] = np.exp(-((y_index-j)**2)/(2*r**2))
                 num = num + 1
 
-            each_data2 = np.loadtxt(self.validation_data_path + '/' + dataArea + 
+            each_data2 = np.loadtxt(self.validation_data_path + '/' + data_area + 
                                     '/phase_image/' + each_valid_file + '.dat')
-            each_label2 = np.loadtxt(self.validation_data_path + '/' + dataArea + 
+            each_label2 = np.loadtxt(self.validation_data_path + '/' + data_area + 
                                     '/phase_velocity/' + each_valid_file + '.dat')
             each_data2 = each_data2[:, :col]
             each_label2 = each_label2[:col, 1]
@@ -221,7 +221,7 @@ class Reader(object):
             each_data = each_data[:, :self.uniform_data_size[0], :self.uniform_data_size[1]]
             each_label = each_label[:, :self.uniform_data_size[0], :self.uniform_data_size[1]]
 
-            if dataArea == 'Weifang' or dataArea == 'Changning':
+            if data_area == 'Weifang' or data_area == 'Changning':
                 uniformData = np.zeros((2, self.uniform_data_size[0], self.uniform_data_size[1]))
                 uniformLabel = np.zeros((2, self.uniform_data_size[0], self.uniform_data_size[1]))
                 uniformData[:, :each_data.shape[1], :each_data.shape[2]] = each_data
@@ -238,7 +238,7 @@ class Reader(object):
         validation_label = np.array(validation_label)
         validation_label = validation_label.transpose((0,2,3,1))
 
-        return validation_data, validation_label, fileList
+        return validation_data, validation_label, file_list
 
     def get_test_file(self):
         filename_list = []

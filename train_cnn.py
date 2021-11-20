@@ -262,7 +262,7 @@ class CNN(object):
                 input, label = self.reader.get_batch_data(data_area=data_area, 
                                                           start_point=start_point, 
                                                           seed=epoch, 
-                                                          fileList=filename_train[data_area])
+                                                          file_list=filename_train[data_area])
 
                 summary, _, = sess.run([self.merged, training],
                                        feed_dict={self.layer['input']: input,
@@ -283,7 +283,7 @@ class CNN(object):
                     # data_area = 'Suqian'
                     validation_input, validation_label, validation_filename = \
                         self.reader.get_validation_data(data_area=data_area, 
-                                                        fileList=filename_validation[data_area])
+                                                        file_list=filename_validation[data_area])
 
                     # print(validation_input.shape, validation_label.shape)
                     validation_output = sess.run(self.layer['prediction'],
