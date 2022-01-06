@@ -27,6 +27,7 @@ class Config(object):
     
     Picking thresholds:
         ref_T (int): Find the local maximum points in this column of C dispersion image. 
+            This para can be set to 'None' to use the default value.
         ref_T2 ([int, int]): Use these columns to calculate the average probability of C curves.   
             This para can be set to [] to use the default value.
         confidence_G (float): Accept the points if G probability (output of DPNet) value is 
@@ -61,7 +62,7 @@ class Config(object):
     """
 
     def __init__(self):
-        self.root = '/data/lup/yang/AI_dispv4/DisperPicker'
+        self.root = '/home/yang/Projects/DisperPicker'
 
         self.training_step = 60000
         self.learning_rate = 1e-4

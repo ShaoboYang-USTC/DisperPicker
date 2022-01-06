@@ -18,6 +18,7 @@ from reader.reader import Reader
 from train_cnn import CNN
 from config.config import Config
 from plot.plot_test import plot_test
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 class Pick_v(object):
     """ Pick the dispersion curves.
@@ -39,6 +40,7 @@ class Pick_v(object):
         """
         # Load station info.
         config = self.config
+        auto_refT = not bool(config.ref_T)
         station = {}
         sum_test_loss = 0
         with open('./config/station.txt') as f:
@@ -84,8 +86,8 @@ class Pick_v(object):
                 batch_input.append(each_data)
 
                 if config.test:
-                    file_path_vG = (config.test_data_path + '/group_velocity/' + file + '.dat')
-                    file_path_vC = (config.test_data_path + '/phase_velocity/' + file + '.dat')
+                    file_path_vG = (config.test_data_path + '/group_velocity/' + file + '.txt')
+                    file_path_vC = (config.test_data_path + '/phase_velocity/' + file + '.txt')
                     try:
                         true_vG = np.loadtxt(file_path_vG)       
                     except:
@@ -135,6 +137,8 @@ class Pick_v(object):
                 loc2 = station[sta2]
                 dist = (111*((loc1[0] - loc2[0])**2 + ((loc1[1] - loc2[1])*math.cos(loc1[0]*
                         3.14/180))**2)**0.5)
+                if auto_refT:                
+                    config.ref_T = min(config.range_T[2]-1, round((dist/1.5/3.2 - config.range_T[0])/config.dT))
 
                 # Extract group velocity.
                 dir_name = config.result_path + '/test_result/' + file

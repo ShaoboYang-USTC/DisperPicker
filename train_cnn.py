@@ -9,6 +9,7 @@ import numpy as np
 import os
 import random
 import tensorflow as tf
+import time
 from config.config import Config
 from plot.plot_train import plot_train
 from reader.reader import Reader
@@ -210,6 +211,7 @@ class CNN(object):
 
 
     def train(self, passes):
+        b_time = time.time()
         # os.system('rm -rf %s/result/validation_result/*'%self.config.root)
         epoch = 1
         start_point = 1
@@ -231,8 +233,17 @@ class CNN(object):
         file_num_train = {'Suqian':len(os.listdir(self.training_data_path + '/Suqian/group_velocity')), 
                           'Changning':len(os.listdir(self.training_data_path + '/Changning/group_velocity')), 
                           'Weifang':len(os.listdir(self.training_data_path + '/Weifang/group_velocity'))}
+        '''
+        config = tf.ConfigProto(
+                                device_count={"CPU":12},
+                                inter_op_parallelism_threads=0,
+                                intra_op_parallelism_threads=4,
+                                allow_soft_placement=True)
+        '''
 
-        with tf.Session() as sess:
+        config = tf.ConfigProto()
+        config.gpu_options.per_process_gpu_memory_fraction = 0.80 
+        with tf.Session(config=config) as sess:
             loss, raw_loss = self.loss
             training = tf.train.AdamOptimizer(self.config.learning_rate).minimize(loss)
 
@@ -352,6 +363,9 @@ class CNN(object):
 
                 if step % 3 == 0:
                     start_point += self.batch_size
+        e_time = time.time()
+        print('Time consuming:', e_time-b_time)
+        
 
     def predict(self, sess, input):
         prediction = sess.run(self.layer['prediction'],
