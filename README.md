@@ -6,6 +6,8 @@ E-mail: <yang0123@mail.ustc.edu.cn>
 
 This tool mainly targets at automatically extracting dispersion curves via deep learning for the image transformation technique (EGFAnalysisTimeFreq) and the associated software developed by Huajian Yao, which is widely used in the community for dense array ambient noise analysis (https://github.com/ShaoboYang-USTC/EGFAnalysisTimeFreq) 
 
+References: Yang, S., Zhang, H., Gu, N., Gao, J., Xu, J., Jin, J., Li, J., and Yao H. (2022). Automatically Extracting Surface Wave Group and Phase Velocity Dispersion Curves from Dispersion Spectrograms Using a Convolutional Neural Network. Seismological Research Letters, doi: https://doi.org/10.1785/0220210280.
+
 ## 1. Installation
 
 * Download repository
