@@ -14,7 +14,7 @@ This tool mainly targets at automatically extracting dispersion curves via deep 
 
 ## 2. Applications
 
-* Put the test data into `./data/TestData`. When saving the dispersion spectrograms, the velocity step (dv) must be 0.02 km/s and the recommended period step (dT) is 0.1 s. The dispersion spectrograms can be derived from EGFs or CFs using EGFAnalysisTimeFreq (https://github.com/ShaoboYang-USTC/EGFAnalysisTimeFreq)
+* Put the test data into `./data/TestData`. When saving the dispersion spectrograms, the velocity step (dv) must be 0.02 km/s and the recommended period step (dT) is 0.1 s. The dispersion spectrograms can be derived from EGFs or CFs using EGFAnalysisTimeFreq (https://github.com/ShaoboYang-USTC/EGFAnalysisTimeFreq) 
 
 * Check the parameters in the configuration file: `./config/config.py`
 
