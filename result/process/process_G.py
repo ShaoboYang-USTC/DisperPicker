@@ -230,7 +230,7 @@ plt.yticks([0, 1, 2, 3, 4, 5])
 plt.title('Group velocity',fontsize=fontsize)
 plt.tick_params(labelsize=15)
 
-plt.savefig(root_path + '/DPN_G.jpg', bbox_inches='tight', dpi=600)
+plt.savefig(root_path + '/DP_G.jpg', bbox_inches='tight', dpi=600)
 plt.close()
 
 

@@ -240,7 +240,7 @@ plt.yticks([0, 1, 2, 3, 4, 5])
 plt.title('Phase velocity', fontsize=fontsize)
 plt.tick_params(labelsize=15)
 
-plt.savefig(root_path + '/DPN_C.jpg', bbox_inches='tight', dpi=600)
+plt.savefig(root_path + '/DP_C.jpg', bbox_inches='tight', dpi=600)
 plt.close()
 
 
