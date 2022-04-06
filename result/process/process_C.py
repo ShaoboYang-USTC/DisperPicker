@@ -32,7 +32,6 @@ all_dir.sort()
 all_dist = []
 truncated = 0
 for file in all_dir:
-    dir_name.append(file)
     sta_pair = file.split('.')[:2]
     loc1 = station[sta_pair[0]]
     loc2 = station[sta_pair[1]]
@@ -48,7 +47,8 @@ for file in all_dir:
                 break
     new_each_v = np.zeros(len(T))
     new_each_v[:i+1] = each_velocity[:i+1]
-
+    
+    dir_name.append(file)
     velocity.append(new_each_v)
 print('Truncated number:', truncated)
 # print(min(all_dist))
