@@ -14,6 +14,13 @@ all_file = os.listdir(root + sub + '/group_velocity')
 for file in os.listdir(root + sub + '/phase_velocity'):
     if file not in all_file:
         all_file.append(file)
+if config.test:
+    for file in os.listdir(root + '/data/TestData/group_velocity'):
+        if file not in all_file:
+            all_file.append(file)
+    for file in os.listdir(root + '/data/TestData/phase_velocity'):
+        if file not in all_file:
+            all_file.append(file)
 print(len(all_file))
 # part_file = random.sample(all_file,200)
 part_file = all_file
@@ -52,7 +59,23 @@ for file in part_file:
     plt.pcolor(T, V, group_image2, cmap='jet', vmin=z_min, vmax=z_max + 0.05)
     plt.colorbar()
 
-    if file+'.txt' in os.listdir(root + sub + '/group_velocity'):
+    if config.test and file + '.txt' in os.listdir(root + '/data/TestData/group_velocity'):
+        start = 0
+        end = col - 1
+        group_velocity = np.loadtxt(root + '/data/TestData/group_velocity/' + file + '.txt')[:, 1]
+        for k in range(len(group_velocity)):
+            if group_velocity[int(k)] != 0:
+                start = int(k)
+                break
+        for j in range(len(group_velocity))[start:]:
+            if group_velocity[int(j)] == 0:
+                end = int(j)
+                break
+        plt.plot(T[start:end], group_velocity[start:end], '-w', linewidth=2, label='Manually Picked')
+        start = 0
+        end = col - 1
+
+    if file + '.txt' in os.listdir(root + sub + '/group_velocity'):
         start = 0
         end = col - 1
         group_velocity = np.loadtxt(root + sub + '/group_velocity/' + file + '.txt')[:, 1]
@@ -78,6 +101,22 @@ for file in part_file:
     z_min = phase_image2.min()
     plt.pcolor(T, V, phase_image2, cmap='jet', vmin=z_min, vmax=z_max + 0.05)
     plt.colorbar()
+
+    if config.test and file + '.txt' in os.listdir(root + '/data/TestData/phase_velocity'):
+        start = 0
+        end = col - 1
+        phase_velocity = np.loadtxt(root + '/data/TestData/phase_velocity/' + file + '.txt')[:, 1]
+        for k in range(len(phase_velocity)):
+            if phase_velocity[int(k)] != 0:
+                start = int(k)
+                break
+        for j in range(len(phase_velocity))[start:]:
+            if phase_velocity[int(j)] == 0:
+                end = int(j)
+                break
+        plt.plot(T[start:end], phase_velocity[start:end], '-w', linewidth=2, label='Manually Picked')
+        start = 0
+        end = col - 1
 
     if file + '.txt' in os.listdir(root + sub + '/phase_velocity'):
         phase_velocity = np.loadtxt(root + sub + '/phase_velocity/' + file + '.txt')[:, 1]
