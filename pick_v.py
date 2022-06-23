@@ -169,7 +169,6 @@ class Pick_v(object):
                 x = np.linspace(config.range_T[0], config.range_T[1], config.range_T[2])
 
                 pred_vG = self.process_G(pred_vG, disp_G, pred_probG)
-                pred_vG = self.dist_constraint(pred_vG, dist)
 
                 # Find the T start and the end of the disp.
                 # G_start is the T start of the group velocity.
@@ -181,7 +180,8 @@ class Pick_v(object):
                         G_start = min(G_start, j)
                         G_end = max(G_end, j)
                         pred_vG[j] += config.range_V[0]
-
+                pred_vG = self.dist_constraint(pred_vG, dist)
+                
                 output_vG = []
                 output_vG.append(x)
                 output_vG.append(pred_vG[:config.input_size[1]])
@@ -213,8 +213,8 @@ class Pick_v(object):
                 for j in range(len(pred_vC)):
                     if pred_vC[j] != 0:
                         pred_vC[j] += config.range_V[0]
-
                 pred_vC = self.dist_constraint(pred_vC, dist)
+                
                 output_vC = []
                 output_vC.append(x)
                 output_vC.append(pred_vC[:config.input_size[1]])
