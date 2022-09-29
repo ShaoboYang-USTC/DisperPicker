@@ -62,33 +62,33 @@ class Config(object):
     """
 
     def __init__(self):
-        self.root = '/home/yang/Projects/DisperPicker'
-
+        self.root = '/home/yang/Projects/Github_repositories/DisperPicker'
+        self.train = False
         self.training_step = 60000
         self.learning_rate = 1e-4
         self.damping = 0.0
-        self.test = False  
-        self.batch_size = 100 
+        self.test = True  
+        self.batch_size = 10
 
         self.range_T = [0.2, 5, 49]    # [start, end, num]
-        self.range_V = [0.5, 4, 176]   # [start, end, num]
-        self.random_plot = 1/100 
+        self.range_V = [0.5, 4, 701]   # [start, end, num]
+        self.random_plot = 1/1 
         self.dT = (self.range_T[1] - self.range_T[0])/(self.range_T[2] - 1)
         self.dV = (self.range_V[1] - self.range_V[0])/(self.range_V[2] - 1)
         self.input_size = [self.range_V[-1], self.range_T[-1], 2]
 
         # picking thresholds
         self.ref_T = 12 
-        self.ref_T2 = [] 
+        self.ref_T2 = [0, 30] 
         self.confidence_G = 0.5 
-        self.disp_G_value = 0.6 
-        self.mean_confidence_C = 0.6 
+        self.disp_G_value = 0.4 
+        self.mean_confidence_C = 0.5 
         self.confidence_C = 0 
         self.min_len = 15 
         self.begin = 0 
-        self.forward = False 
-        self.backward = False 
-        self.mean_confidence_G = 0.6 
+        self.forward = True 
+        self.backward = True 
+        self.mean_confidence_G = 0.4
 
         # another detailed thresholds
         self.max_dv_G = 0.15 

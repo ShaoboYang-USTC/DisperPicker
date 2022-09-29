@@ -53,8 +53,7 @@ class Pick_v(object):
 
         # Load the trained model.
         saver = tf.train.Saver()
-        with open(config.root + '/saver/checkpoint') as file:
-            ckpt = config.root + '/saver/-60000'
+        ckpt = config.root + '/saver/-10000'
         saver.restore(self.sess, ckpt)
         print('Restored CNN model from checkpoint' + ckpt)
 
@@ -142,7 +141,7 @@ class Pick_v(object):
 
                 # Extract group velocity.
                 dir_name = config.result_path + '/test_result/' + file
-                os.system('mkdir %s' % dir_name)
+                os.system('mkdir -p %s' % dir_name)
                 fig_name = '{}/test_result/{}/{}'.format(config.result_path, file, file)
 
                 # np.savetxt('{}/mapG.{}.txt'.format(dir_name, file), batch_pred_probG[i])
@@ -542,7 +541,7 @@ class Pick_v(object):
 
             x1 = np.linspace(config.range_T[0], config.range_T[1], config.range_T[2])
             y1 = np.linspace(config.range_V[0], config.range_V[1], config.range_V[2])
-            plt.pcolor(x1, y1, disp_C, cmap='jet', vmin=-1, vmax=1.05)
+            plt.pcolor(x1, y1, disp_C, shading='auto', cmap='jet', vmin=-1, vmax=1.05)
             plt.colorbar()
             plt.xlabel('Period (s)',fontsize=fontsize)
             plt.ylabel('Phase Velocity (km/s)',fontsize=fontsize)

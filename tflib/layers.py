@@ -28,7 +28,9 @@ def cnn_layer(input, filter_size, strides, padding, acti_func=tf.nn.relu,
         convolution = tf.add(convolution, bias)
 
         if norm:
-            convolution = batch_norm(convolution)
+            # convolution = batch_norm(convolution)
+            convolution = bn_layer(convolution, Config().train)
+            
 
         output = acti_func(convolution, name='output')
         tf.summary.histogram('output', output)
@@ -60,7 +62,7 @@ def trans_cnn_layer(input, output_size, filter_size, strides, padding, acti_func
                                              output_shape=output_size, strides=strides, 
                                              padding=padding)
         if norm:
-            convolution = batch_norm(convolution)
+            convolution = bn_layer(convolution, True)
 
         output = acti_func(convolution, name='output')
         tf.summary.histogram('output', output)
@@ -172,7 +174,7 @@ def input_norm(input, name, cnn=True):
         tf.summary.histogram('shift', shift)
     return input_norm
 
-
+'''
 def batch_norm(input):
     input_size = list(np.array(input).shape)
     mean, variance = tf.nn.moments(input, axes=[0, 1, 2])
@@ -188,3 +190,52 @@ def batch_norm(input):
     tf.summary.histogram('shift', shift)
 
     return norm_output
+'''
+
+def layer_norm_compute_python(x, epsilon, scale, bias):
+    mean = tf.reduce_mean(x, axis=[-1], keep_dims=True)
+    variance = tf.reduce_mean(tf.square(x - mean), axis=[-1], keep_dims=True)
+    norm_x = (x - mean) * tf.rsqrt(variance + epsilon)
+    return norm_x * scale + bias
+ 
+def layer_norm(x, filters=None, epsilon=1e-6, scope=None, reuse=None):
+    if filters is None:
+        filters = x.get_shape()[-1]
+    with tf.variable_scope(scope, default_name="layer_norm", values=[x], reuse=reuse):
+        scale = tf.get_variable(
+            "layer_norm_scale", [filters], initializer=tf.ones_initializer())
+        bias = tf.get_variable(
+            "layer_norm_bias", [filters], initializer=tf.zeros_initializer())
+        result = layer_norm_compute_python(x, epsilon, scale, bias)
+        return result
+
+def bn_layer(x,is_training,moving_decay=0.9,eps=1e-5,scope=None,reuse=None):
+    # 获取输入维度并判断是否匹配卷积层(4)或者全连接层(2)
+    shape = x.shape
+    assert len(shape) in [2,4]
+
+    param_shape = shape[-1]
+    with tf.variable_scope(scope, default_name="layer_norm", values=[x], reuse=reuse):
+        # 声明BN中唯一需要学习的两个参数，y=gamma*x+beta
+        scale = tf.get_variable('layer_norm_scale',param_shape,initializer=tf.constant_initializer(1))
+        shift  = tf.get_variable('layer_norm_bias', param_shape,initializer=tf.constant_initializer(0))
+
+        # 计算当前整个batch的均值与方差
+        axes = list(range(len(shape)-1))
+        batch_mean, batch_var = tf.nn.moments(x,axes,name='moments')
+
+        # 采用滑动平均更新均值与方差
+        ema = tf.train.ExponentialMovingAverage(moving_decay)
+
+        def mean_var_with_update():
+            ema_apply_op = ema.apply([batch_mean,batch_var])
+            with tf.control_dependencies([ema_apply_op]):
+                return tf.identity(batch_mean), tf.identity(batch_var)
+
+        # 训练时，更新均值与方差，测试时使用之前最后一次保存的均值与方差
+        mean, var = tf.cond(tf.equal(is_training, True),mean_var_with_update,
+                lambda:(ema.average(batch_mean),ema.average(batch_var)))
+
+        # 最后执行batch normalization
+        return tf.nn.batch_normalization(x,mean,var,shift,scale,eps)
+

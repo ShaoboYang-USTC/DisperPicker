@@ -10,13 +10,14 @@ References: Yang, S., Zhang, H., Gu, N., Gao, J., Xu, J., Jin, J., Li, J., and Y
 
 ## 1. Installation
 
+* Platform: Linux
 * Download repository
 * Install Python 3.6
 * Install dependencies: `pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt`
 
 ## 2. Applications
 
-* Put the test data into `./data/TestData`. When saving the dispersion spectrograms, the velocity step (dv) must be 0.02 km/s and the recommended period step (dT) is 0.1 s. The dispersion spectrograms can be derived from EGFs or CFs using EGFAnalysisTimeFreq.
+* Put the test data into `./data/TestData`. When saving the dispersion spectrograms, the velocity step (dv) must be 0.005 km/s and the recommended period step (dT) is 0.1 s. The dispersion spectrograms can be derived from EGFs or CFs using EGFAnalysisTimeFreq.
 
 * Check the parameters in the configuration file: `./config/config.py`
 

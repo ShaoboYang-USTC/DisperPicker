@@ -37,7 +37,7 @@ def plot_test(fig1, prob_G, curve_G, fig2, prob_C, curve_C, name,
     x1 = np.linspace(range_T[0],range_T[1],range_T[2])
     y1 = np.linspace(range_V[0],range_V[1],range_V[2])
 
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=0, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=0, vmax=z_max+0.05)
     plt.colorbar()
     plt.xlabel('Period (s)',fontsize=fontsize)
     plt.ylabel('Group Velocity (km/s)',fontsize=fontsize)
@@ -48,7 +48,7 @@ def plot_test(fig1, prob_G, curve_G, fig2, prob_C, curve_C, name,
     x2 = x1
     y2 = y1
 
-    plt.pcolor(x2, y2, prob_G, cmap='jet', vmin=0, vmax=z_max+0.05)
+    plt.pcolor(x2, y2, prob_G, shading='auto', cmap='jet', vmin=0, vmax=z_max+0.05)
     plt.colorbar()
     plt.xlabel('Period (s)',fontsize=fontsize)
     plt.ylabel('Group Velocity (km/s)',fontsize=fontsize)
@@ -56,7 +56,7 @@ def plot_test(fig1, prob_G, curve_G, fig2, prob_C, curve_C, name,
     plt.tick_params(labelsize=15)
 
     plt.subplot(423)      # plot the dispersion curve before correction
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=0, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=0, vmax=z_max+0.05)
     x4 = x1
     prob_G = np.array(prob_G)
     max = np.max(prob_G, axis=0)
@@ -74,7 +74,7 @@ def plot_test(fig1, prob_G, curve_G, fig2, prob_C, curve_C, name,
     plt.tick_params(labelsize=15)
 
     plt.subplot(424)       # after correction
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=0, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=0, vmax=z_max+0.05)
     x4 = np.linspace(range_T[0],range_T[1],range_T[2])
 
     if test:
@@ -99,7 +99,7 @@ def plot_test(fig1, prob_G, curve_G, fig2, prob_C, curve_C, name,
     x1 = np.linspace(range_T[0],range_T[1],range_T[2])
     y1 = np.linspace(range_V[0],range_V[1],range_V[2])
 
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=z_min, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=z_min, vmax=z_max+0.05)
     plt.colorbar()
     plt.xlabel('Period (s)',fontsize=fontsize)
     plt.ylabel('Phase Velocity (km/s)',fontsize=fontsize)
@@ -110,7 +110,7 @@ def plot_test(fig1, prob_G, curve_G, fig2, prob_C, curve_C, name,
     x2 = x1
     y2 = y1
 
-    plt.pcolor(x2, y2, prob_C, cmap='jet', vmin=0, vmax=z_max+0.05)
+    plt.pcolor(x2, y2, prob_C, shading='auto', cmap='jet', vmin=0, vmax=z_max+0.05)
     plt.colorbar()
     plt.xlabel('Period (s)',fontsize=fontsize)
     plt.ylabel('Phase Velocity (km/s)',fontsize=fontsize)
@@ -118,7 +118,7 @@ def plot_test(fig1, prob_G, curve_G, fig2, prob_C, curve_C, name,
     plt.tick_params(labelsize=15)
 
     plt.subplot(427)         # before correction
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=z_min, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=z_min, vmax=z_max+0.05)
     x4 = x1
     prob_C = np.array(prob_C)
     max = np.max(prob_C, axis=0)
@@ -136,7 +136,7 @@ def plot_test(fig1, prob_G, curve_G, fig2, prob_C, curve_C, name,
     plt.tick_params(labelsize=15)
 
     plt.subplot(428)           # after correction
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=z_min, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=z_min, vmax=z_max+0.05)
     x4 = np.linspace(range_T[0],range_T[1],range_T[2])
     if test:
         b, e = line_interval(true_C)

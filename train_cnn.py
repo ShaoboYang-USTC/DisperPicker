@@ -5,6 +5,7 @@
  @Email: yang0123@mail.ustc.edu.cn
 """
 
+import math
 import numpy as np
 import os
 import random
@@ -14,6 +15,7 @@ from config.config import Config
 from plot.plot_train import plot_train
 from reader.reader import Reader
 from tflib import layers
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 class CNN(object):
     """ Build a CNN.
@@ -47,7 +49,7 @@ class CNN(object):
         # normalization
         # layer['input_norm'] = layers.input_norm(layer['input'], name = 'input_norm')
         layer['conv1'] = layers.cnn_layer(layer['input'],
-                                          filter_size = [3, 2, 2, 8],
+                                          filter_size = [5, 3, 2, 8],
                                           strides = [1, 1, 1, 1],
                                           padding = 'SAME',
                                           damping = self.config.damping,
@@ -56,15 +58,15 @@ class CNN(object):
                                           norm = True)
         result_from_contract_layer['1'] = layer['conv1']
         layer['pooling1'] = layers.pool(layer['conv1'],
-                                        ksize=[1, 3, 2, 1],
-                                        strides=[1, 3, 2, 1],
-                                        padding='VALID',
+                                        ksize=[1, 4, 2, 1],
+                                        strides=[1, 4, 2, 1],
+                                        padding='SAME',
                                         pool_function=tf.nn.max_pool,
                                         name='pooling1')
-        size1 = [int(size[0]/3),int(size[1]/2)]
+        size1 = [math.ceil(size[0]/4), math.ceil(size[1]/2)]
 
         layer['conv2'] = layers.cnn_layer(layer['pooling1'],
-                                          filter_size=[3, 2, 8, 16],
+                                          filter_size=[5, 3, 8, 16],
                                           strides=[1, 1, 1, 1],
                                           padding='SAME',
                                           damping=self.config.damping,
@@ -73,15 +75,15 @@ class CNN(object):
                                           norm=False)
         result_from_contract_layer['2'] = layer['conv2']
         layer['pooling2'] = layers.pool(layer['conv2'],
-                                        ksize=[1, 3, 2, 1],
-                                        strides=[1, 3, 2, 1],
-                                        padding='VALID',
+                                        ksize=[1, 4, 2, 1],
+                                        strides=[1, 4, 2, 1],
+                                        padding='SAME',
                                         pool_function=tf.nn.max_pool,
                                         name='pooling2')
-        size2 = [int(size1[0]/3),int(size1[1]/2)]
+        size2 = [math.ceil(size1[0]/4), math.ceil(size1[1]/2)]
 
         layer['conv3'] = layers.cnn_layer(layer['pooling2'],
-                                          filter_size=[3, 2, 16, 32],
+                                          filter_size=[5, 3, 16, 32],
                                           strides=[1, 1, 1, 1],
                                           padding='SAME',
                                           damping=self.config.damping,
@@ -90,15 +92,15 @@ class CNN(object):
                                           norm=False)
         result_from_contract_layer['3'] = layer['conv3']
         layer['pooling3'] = layers.pool(layer['conv3'],
-                                        ksize=[1, 3, 2, 1],
-                                        strides=[1, 3, 2, 1],
-                                        padding='VALID',
+                                        ksize=[1, 4, 2, 1],
+                                        strides=[1, 4, 2, 1],
+                                        padding='SAME',
                                         pool_function=tf.nn.max_pool,
                                         name='pooling3')
-        # size3 = [int(size2[0]/3),int(size2[1]/2)]
+        # size3 = [math.ceil(size2[0]/4), math.ceil(size2[1]/2)]
 
         layer['conv4'] = layers.cnn_layer(layer['pooling3'],
-                                          filter_size=[3, 2, 32, 64],
+                                          filter_size=[5, 3, 32, 64],
                                           strides=[1, 1, 1, 1],
                                           padding='SAME',
                                           damping=self.config.damping,
@@ -108,9 +110,9 @@ class CNN(object):
 
         layer['trans_conv4'] = layers.trans_cnn_layer(layer['conv4'],
                                                       output_size=[batch_size, size2[0], size2[1], 32],
-                                                      filter_size=[3, 2, 32, 64],
-                                                      strides=[1, 3, 2, 1],
-                                                      padding='VALID',
+                                                      filter_size=[4, 2, 32, 64],
+                                                      strides=[1, 4, 2, 1],
+                                                      padding='SAME',
                                                       damping=self.config.damping,
                                                       bias=0.0,
                                                       name='trans_conv4',
@@ -120,7 +122,7 @@ class CNN(object):
             result_from_contract_layer=result_from_contract_layer['3'],
             result_from_upsampling=layer['trans_conv4'])
         layer['conv5'] = layers.cnn_layer(merge,
-                                          filter_size=[3, 2, 64, 32],
+                                          filter_size=[5, 3, 64, 32],
                                           strides=[1, 1, 1, 1],
                                           padding='SAME',
                                           damping=self.config.damping,
@@ -129,9 +131,9 @@ class CNN(object):
                                           norm=False)
         layer['trans_conv5'] = layers.trans_cnn_layer(layer['conv5'],
                                                       output_size=[batch_size, size1[0], size1[1], 16],
-                                                      filter_size=[3, 2, 16, 32],
-                                                      strides=[1, 3, 2, 1],
-                                                      padding='VALID',
+                                                      filter_size=[4, 2, 16, 32],
+                                                      strides=[1, 4, 2, 1],
+                                                      padding='SAME',
                                                       damping=self.config.damping,
                                                       bias=0.0,
                                                       name='trans_conv5',
@@ -141,7 +143,7 @@ class CNN(object):
             result_from_contract_layer=result_from_contract_layer['2'],
             result_from_upsampling=layer['trans_conv5'])
         layer['conv6'] = layers.cnn_layer(merge,
-                                          filter_size=[3, 2, 32, 16],
+                                          filter_size=[5, 3, 32, 16],
                                           strides=[1, 1, 1, 1],
                                           padding='SAME',
                                           damping=self.config.damping,
@@ -151,9 +153,9 @@ class CNN(object):
 
         layer['trans_conv6'] = layers.trans_cnn_layer(layer['conv6'],
                                                       output_size=[batch_size, size[0], size[1], 8],
-                                                      filter_size=[3, 2, 8, 16],
-                                                      strides=[1, 3, 2, 1],
-                                                      padding='VALID',
+                                                      filter_size=[4, 2, 8, 16],
+                                                      strides=[1, 4, 2, 1],
+                                                      padding='SAME',
                                                       damping=self.config.damping,
                                                       bias=0.0,
                                                       name='trans_conv6',
@@ -163,7 +165,7 @@ class CNN(object):
             result_from_contract_layer=result_from_contract_layer['1'],
             result_from_upsampling=layer['trans_conv6'])
         layer['conv7'] = layers.cnn_layer(merge,
-                                          filter_size=[3, 2, 16, 8],
+                                          filter_size=[5, 3, 16, 8],
                                           strides=[1, 1, 1, 1],
                                           padding='SAME',
                                           damping=self.config.damping,
@@ -172,7 +174,7 @@ class CNN(object):
                                           norm=True)
 
         layer['prediction'] = layers.cnn_layer(layer['conv7'],
-                                          filter_size=[3, 2, 8, 2],
+                                          filter_size=[5, 3, 8, 2],
                                           strides=[1, 1, 1, 1],
                                           padding='SAME',
                                           acti_func=tf.nn.sigmoid,
@@ -233,17 +235,19 @@ class CNN(object):
         file_num_train = {'Suqian':len(os.listdir(self.training_data_path + '/Suqian/group_velocity')), 
                           'Changning':len(os.listdir(self.training_data_path + '/Changning/group_velocity')), 
                           'Weifang':len(os.listdir(self.training_data_path + '/Weifang/group_velocity'))}
+        
         '''
-        config = tf.ConfigProto(
-                                device_count={"CPU":12},
-                                inter_op_parallelism_threads=0,
-                                intra_op_parallelism_threads=4,
-                                allow_soft_placement=True)
-        '''
+        conf = tf.ConfigProto(
+                              device_count={"CPU":12},
+                              inter_op_parallelism_threads=0,
+                              intra_op_parallelism_threads=4,
+                              allow_soft_placement=True)
 
-        config = tf.ConfigProto()
-        config.gpu_options.per_process_gpu_memory_fraction = 0.80 
-        with tf.Session(config=config) as sess:
+        conf = tf.ConfigProto()
+        conf.gpu_options.per_process_gpu_memory_fraction = 0.80 
+        '''
+        
+        with tf.Session() as sess:
             loss, raw_loss = self.loss
             training = tf.train.AdamOptimizer(self.config.learning_rate).minimize(loss)
 
@@ -274,7 +278,7 @@ class CNN(object):
                                                           start_point=start_point, 
                                                           seed=epoch, 
                                                           file_list=filename_train[data_area])
-
+                
                 summary, _, = sess.run([self.merged, training],
                                        feed_dict={self.layer['input']: input,
                                                   self.layer['label']: label})
@@ -320,7 +324,7 @@ class CNN(object):
 
                     all_valid_loss.append(valid_raw_loss)
 
-                if step % 500 == 0:
+                if step % 100 == 0:
                     saver.save(sess, self.config.root + '/saver/', global_step=step)
                     print('validation_loss {}'.format(valid_loss))
                     print('validation_raw_loss {}'.format(valid_raw_loss), '\n')
@@ -335,7 +339,7 @@ class CNN(object):
 
                     target = self.result_path + '/validation_result/' + str(step) + '/'
                     if not os.path.exists(target):
-                        os.mkdir(target)
+                        os.makedirs(target)
 
                     plot_size = len(validation_output)
 
@@ -343,7 +347,7 @@ class CNN(object):
                     for i in range(plot_size):
                         path = target + validation_filename[i] + '/'
                         if not os.path.exists(path):
-                            os.mkdir(path)
+                            os.makedirs(path)
                         input = validation_input[i].transpose((2, 0, 1))
                         curve1 = validation_output[i].transpose((2, 0, 1))
                         curve2 = validation_label[i].transpose((2, 0, 1))

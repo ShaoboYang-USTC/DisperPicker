@@ -36,7 +36,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
     x1 = np.linspace(range_T[0],range_T[1],range_T[2])
     y1 = np.linspace(range_V[0],range_V[1],range_V[2])
 
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=z_min, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=z_min, vmax=z_max+0.05)
     plt.colorbar()
     ture_G = []
     curve2[0] = np.array(curve2[0])
@@ -58,7 +58,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
     x2 = x1
     y2 = y1
 
-    plt.pcolor(x2, y2, curve1[0], cmap='jet', vmin=0, vmax=1.05)
+    plt.pcolor(x2, y2, curve1[0], shading='auto', cmap='jet', vmin=0, vmax=1.05)
     plt.colorbar()
     plt.xlabel('Period (s)',fontsize=fontsize)
     plt.ylabel('Group Velocity (km/s)',fontsize=fontsize)
@@ -69,7 +69,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
     x3 = x1
     y3 = y1
 
-    plt.pcolor(x3, y3, curve2[0], cmap='jet', vmin=0, vmax=1.05)
+    plt.pcolor(x3, y3, curve2[0], shading='auto', cmap='jet', vmin=0, vmax=1.05)
     plt.colorbar()
     plt.xlabel('Period (s)',fontsize=fontsize)
     plt.ylabel('Group Velocity (km/s)',fontsize=fontsize)
@@ -95,7 +95,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
     #for i in range(len(max)):
     #    index = list(curve2[0][i]).index(max[i])
     #    y4.append(index/500)
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=z_min, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=z_min, vmax=z_max+0.05)
     plt.colorbar()
     b, e = line_interval(ture_G, range_T, range_V)
     plt.plot(x4[b:e],ture_G[b:e],'-wo', linewidth=2, markersize=3, label='Label')
@@ -117,7 +117,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
     x1 = np.linspace(range_T[0],range_T[1],range_T[2])
     y1 = np.linspace(range_V[0],range_V[1],range_V[2])
 
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=z_min, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=z_min, vmax=z_max+0.05)
     plt.colorbar()
     ture_C = []
     curve2[1] = np.array(curve2[1])
@@ -138,7 +138,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
     x2 = x1
     y2 = y1
 
-    plt.pcolor(x2, y2, curve1[1], cmap='jet', vmin=0, vmax=1.05)
+    plt.pcolor(x2, y2, curve1[1], shading='auto', cmap='jet', vmin=0, vmax=1.05)
     plt.colorbar()
     plt.xlabel('Period (s)',fontsize=fontsize)
     plt.ylabel('Phase Velocity (km/s)',fontsize=fontsize)
@@ -149,7 +149,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
     x3 = x1
     y3 = y1
 
-    plt.pcolor(x3, y3, curve2[1], cmap='jet', vmin=0, vmax=1.05)
+    plt.pcolor(x3, y3, curve2[1], shading='auto', cmap='jet', vmin=0, vmax=1.05)
     plt.colorbar()
     plt.xlabel('Period (s)',fontsize=fontsize)
     plt.ylabel('Phase Velocity (km/s)',fontsize=fontsize)
@@ -175,7 +175,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
     #for i in range(len(max)):
     #    index = list(curve2[1][i]).index(max[i])
     #    y4.append(index/500)
-    plt.pcolor(x1, y1, image, cmap='jet', vmin=z_min, vmax=z_max+0.05)
+    plt.pcolor(x1, y1, image, shading='auto', cmap='jet', vmin=z_min, vmax=z_max+0.05)
     plt.colorbar()
     b, e = line_interval(ture_C, range_T, range_V)
     plt.plot(x4[b:e],ture_C[b:e],'-wo', linewidth=2, markersize=3, label='Label')
