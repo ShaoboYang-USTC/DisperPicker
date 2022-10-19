@@ -312,7 +312,7 @@ class Pick_v(object):
                 good_points = good_points + 1
                 if good_points >= 10:
                     break
-        print('Group velocity interval:', start, end)
+        print('Group velocity period index range:', start, end)
 
         if start > 0:
             pred_vG[:start] = np.zeros(start)
@@ -559,7 +559,7 @@ class Pick_v(object):
             # plt.show()
             plt.savefig(name, bbox_inches='tight', dpi=300)
             plt.close()
-            print('Potential phase curve number:', len(potential_c))
+        print('Potential phase curve number:', len(potential_c))
 
         # find the best phase curve
         pred_vG = np.zeros(col)
@@ -582,7 +582,7 @@ class Pick_v(object):
             # print(confidence, each_len)
             if len(confidence) != 0:
                 max_probGindex = confidence.index(max(confidence))
-                print('Max average probability:', confidence[max_probGindex]/each_len[max_probGindex])
+                print('Max average C probability value:', confidence[max_probGindex]/each_len[max_probGindex])
                 if confidence[max_probGindex]/each_len[max_probGindex] >= config.mean_confidence_C:
                     for each2 in potential_c2[max_probGindex]:
                         pred_vG[each2[0]] = each2[1]*dV
@@ -682,7 +682,7 @@ class Pick_v(object):
             if map_C[int(pred_vC[k]/dV)][k] >= config.confidence_C:
                 break
         new_pred_vG = np.zeros(col)
-        print('Phase velocity interval:', start, k)
+        print('Phase velocity period index range:', start, k)
         # print(stage_index, stage_eng)
         # no smooth
         if len_stage <= 5 and stage_length[max_probGindex] >= config.min_len:

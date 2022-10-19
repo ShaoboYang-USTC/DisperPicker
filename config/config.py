@@ -20,7 +20,8 @@ class Config(object):
             to pick dispersion curves, this should be False.
         range_T: Period range [start, end, num]
         range_V: Velocity range [start, end, num]
-        random_plot: Plot part of (e.g. 1/100) the pick results.
+        random_plot: Plot part of (e.g. 1/100 = 1%) the pick results. This is time consuming. 
+            Please do not plot too much if it is not necessary. 
         dT: Auto calculated.
         dV: Auto calculated.
         input_size (int): Input size, auto calculated.
