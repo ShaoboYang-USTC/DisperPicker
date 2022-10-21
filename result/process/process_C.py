@@ -119,7 +119,7 @@ for i in range(len(velocity)):
     start0 = []
     end0 = []
     for j in range(len(start)):
-        if start[j] < min_start_t:
+        if start[j] <= min_start_t:
             stage_len.append(end[j] - start[j] + 1)
             start0.append(start[j])
             end0.append(end[j])
@@ -196,8 +196,10 @@ for i in range(len(velocity)):
                 #print(final_velocity)
                 if (true_length[max_index] >= min_len and 
                         final_velocity[true_start[max_index]] - final_velocity[true_end[max_index]] < downward):
-                    all_group_velocity_num += 1
-                    new_velocity[start[k]:end[k]+1] = final_velocity
+                    none_zero = np.where(final_velocity != 0)[0]
+                    if min(none_zero) <= min_start_t:
+                        all_group_velocity_num += 1
+                        new_velocity[start[k]:end[k]+1] = final_velocity
                     #print(new_velocity)
 
                     write_G = []
