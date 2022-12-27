@@ -20,14 +20,14 @@ class Reader(object):
         self.validation_data_path = self.config.validation_data_path
         self.test_data_path = self.config.test_data_path
         self.batch_size = self.config.batch_size
-        self.radius = 5
-        self.data_size_list = {'Suqian':[201, 76, 2], 'Changning':[151, 60, 2], 
-                               'Weifang':[151, 95, 2]}
-        self.data_range_V = {'Suqian':[1, 5, 0.02], 'Changning':[1, 4, 0.02], 
-                             'Weifang':[1, 4, 0.02]}
+        self.radius = 20
+        self.data_size_list = {'Suqian':[801, 76, 2], 'Changning':[601, 60, 2], 
+                               'Weifang':[601, 95, 2]}
+        self.data_range_V = {'Suqian':[1, 5, 0.005], 'Changning':[1, 4, 0.005], 
+                             'Weifang':[1, 4, 0.005]}
         self.data_range_T = {'Suqian':[0.5, 8, 0.1], 'Changning':[0.1, 6, 0.1], 
                              'Weifang':[0.6, 10, 0.1]}
-        self.uniform_data_size = [201, 76]
+        self.uniform_data_size = [801, 76]
 
     def get_all_filename(self, file_path):
         filename_list = []

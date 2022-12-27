@@ -206,7 +206,7 @@ for i in range(len(velocity)):
                     write_G.append(T)
                     write_G.append(new_velocity)
                     write_G = np.array(write_G).T
-                    np.savetxt(root_path + '/new/phase_velocity/' + dir_name[i], write_G, fmt="%1.2f  %1.2f")
+                    np.savetxt(root_path + '/new/phase_velocity/' + dir_name[i], write_G, fmt="%1.3f  %1.3f")
                     break
 
     velocity[i] = new_velocity

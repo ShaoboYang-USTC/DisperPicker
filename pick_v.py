@@ -185,7 +185,7 @@ class Pick_v(object):
                 output_vG.append(x)
                 output_vG.append(pred_vG[:config.input_size[1]])
                 output_vG = np.array(output_vG).T
-                np.savetxt('{}/newG.{}.txt'.format(dir_name, file), output_vG, fmt="%1.2f  %1.2f")
+                np.savetxt('{}/newG.{}.txt'.format(dir_name, file), output_vG, fmt="%1.3f  %1.3f")
 
                 # Extract phase velocity.
                 # np.savetxt('{}/mapC.{}.txt'.format(dir_name, file), batch_pred_probC[i])
@@ -218,7 +218,7 @@ class Pick_v(object):
                 output_vC.append(x)
                 output_vC.append(pred_vC[:config.input_size[1]])
                 output_vC = np.array(output_vC).T
-                np.savetxt('{}/newC.{}.txt'.format(dir_name, file), output_vC, fmt="%1.2f  %1.2f")
+                np.savetxt('{}/newC.{}.txt'.format(dir_name, file), output_vC, fmt="%1.3f  %1.3f")
 
                 # random plot
                 if plot:

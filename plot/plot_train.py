@@ -18,7 +18,7 @@ def plot_train(fig, curve1, curve2, data_area, name):
 
     data_T_range = {'Suqian':[0.5, 8, 76], 'Changning':[0.1, 7.6, 76], 
                     'Weifang':[0.6, 8.1, 76]}
-    range_V = [1, 5, 201]            # velocity range
+    range_V = [1, 5, 801]            # velocity range
     range_T = data_T_range[data_area]            # period range
 
     fontsize = 18
